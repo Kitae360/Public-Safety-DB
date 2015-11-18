@@ -435,3 +435,5 @@ end
 end
 
 Menu.new
+
+puts "hey"
