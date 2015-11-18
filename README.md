@@ -17,6 +17,6 @@ Please follow read me instructions to run the code
 1. When you log in, you need I.D. and password. (ID: kswag Password: 1234)
 2. You can check the data type of the attributs in DATABASE.sql file
 3. For now, picture attribute in Car Owner Student table has TEXT data type. So when you insert, update the  Car Owner Studen tble, keep this in mind.
-4. Search function is not fully implemeted
+4. Search function is not fully implemented
 5. co stands for car owner DMV table. sco stands for car owner school table. car stands for car table. pp stands for parking permit table.
 6. There is already data stored in. So after you log in, go to check_info to see what is already in there.
