@@ -31,7 +31,7 @@ class Database
 		owner_d_num INTEGER,
 		PRIMARY KEY (License_Plate),
 		FOREIGN KEY (owner_d_num) REFERENCES Car_Owner_SCHOOL(Drivers_License_num))"
-		@db.execute "CREATE TABLE IF NOT EXISTS Car(Type TEXT,
+		@db.execute "CREATE TABLE IF NOT EXISTS Parking_Permit(Type TEXT,
 		Length DATE,
 		Permit_num INTEGER,
 		Suspension BOOLEAN,
