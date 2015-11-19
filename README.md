@@ -11,7 +11,8 @@ Please follow read me instructions to run the code
 1. Download all files that are uploaded
 2. put them in the one same file
 3. Use the commend line to find the file
-4. type ruby code.rb to run the code.
+4. type sqlite3 file.db < DATABASE.sql to create the database file.
+5. type ruby code.rb to run the code.
 
 #About the code
 1. When you log in, you need I.D. and password. (ID: kswag Password: 1234)

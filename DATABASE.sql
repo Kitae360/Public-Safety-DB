@@ -1,8 +1,3 @@
-PRAGMA foreign_keys = ON;
-.mode column
-.header ON
-.nullvalue NULL
-
 CREATE TABLE Car_Owner_DMV(
 Owner_Name_F TEXT,
 Owner_Name_M TEXT,
