@@ -5,8 +5,7 @@ class Database
 	def initialize()
 		@db = SQLite3::Database.open 'file.db'
 		@db.execute("PRAGMA foreign_keys = ON;")
-		@db.execute("PRAGMA table_info(Car_Owner_DMV)")
-
+		
 	end
 
 	def select_sco()
