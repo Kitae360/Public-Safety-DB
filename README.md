@@ -19,4 +19,4 @@ Please follow read me instructions to run the code
 2. You can check the data type of the attributes in DATABASE.sql file
 3. For now, picture attribute in Car Owner Student table has TEXT data type. So when you insert, update the  Car Owner Student table, keep this in mind.
 4. Search function is not fully implemented
-5. co stands for car owner DMV table. sco stands for car owner school table. car stands for car table. pp stands for parking permit table.
+

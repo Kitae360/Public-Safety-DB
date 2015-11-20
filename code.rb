@@ -4,7 +4,6 @@ require 'sqlite3'
 class Database
 	def initialize()
 		@db = SQLite3::Database.open 'file.db'
-		@db.execute("PRAGMA full_column_names = ON;")
 		@db.execute("PRAGMA foreign_keys = ON;")	
 	end
 
@@ -29,26 +28,51 @@ class Database
 	end
 
 	def insert_ticket(t_num, reason, due_date, price, from_who, to_whom, car_permit)
-		@db.execute "INSERT INTO Ticket(Ticket_num, Reason, Due_date, Price, From_who, To_Whom, car_permit) VALUES (#{t_num.to_i}, '#{reason.delete!("'")}', '#{due_date.delete!("'")}', #{price.to_i}, '#{from_who.delete!("'")}', '#{to_whom.delete!("'")}', #{car_permit.to_i})"
+		begin
+			@db.execute "INSERT INTO Ticket(Ticket_num, Reason, Due_date, Price, From_who, To_Whom, car_permit) VALUES (#{t_num.to_i}, '#{reason.delete!("'")}', '#{due_date.delete!("'")}', #{price.to_i}, '#{from_who.delete!("'")}', '#{to_whom.delete!("'")}', #{car_permit.to_i})"
+		rescue SQLite3::Exception => e 
+			puts e
+    			puts "You cannot insert this data!"
+		end
 	end
 
 	def delete_ticket(ticnum)
-		@db.execute "DELETE FROM Ticket WHERE Ticket_num = #{ticnum.to_i}"
+		begin
+			@db.execute "DELETE FROM Ticket WHERE Ticket_num = #{ticnum.to_i}"	
+		rescue SQLite3::Exception => e 
+			puts e
+    			puts "You cannot delete this data!"
+		end
 	end
 
-	def delete_from_sco(dnum)
-		@db.execute "DELETE FROM Car_Owner_SCHOOL WHERE Drivers_License_num = #{dnum.to_i}"
+	def delete_from_school_owner_table(dnum)
+		begin
+			@db.execute "DELETE FROM Car_Owner_SCHOOL WHERE Drivers_License_num = #{dnum.to_i}"	
+		rescue SQLite3::Exception => e 
+			puts e
+    			puts "You cannot delete this data!"
+		end
 	end
 
-	def delete_from_co(rnum)
-		@db.execute "DELETE FROM Car_Owner_DMV WHERE Registration_num = #{rnum.to_i}"	
+	def delete_from_dmv_table(rnum)
+		begin
+			@db.execute "DELETE FROM Car_Owner_DMV WHERE Registration_num = #{rnum.to_i}"	
+		rescue SQLite3::Exception => e 
+			puts e
+    			puts "You cannot delete this data!"
+		end
 	end
 
 	def update_suspension(pernum)
-		price = @db.execute "SELECT SUM(Price) FROM Ticket WHERE car_permit = #{pernum.to_i}"
-		pricee = price[0]
-		priceee = pricee[0]
-		undate_suspension_func(priceee, pernum)
+		begin
+			price = @db.execute "SELECT SUM(Price) FROM Ticket WHERE car_permit = #{pernum.to_i}"
+			pricee = price[0]
+			priceee = pricee[0]
+			undate_suspension_func(priceee, pernum)
+		rescue SQLite3::Exception => e 
+			puts e
+    			puts "You cannot update this data!"
+		end
 	end
 
 	def undate_suspension_func(price, pernum)
@@ -63,49 +87,98 @@ class Database
 		puts @db.execute "SELECT *FROM Parking_permit WHERE Suspension = 'true'"
 	end
 
-	def insert_into_co(name_F, name_M, name_L, r_num)
-		 name_f = name_F
+	def insert_into_dmv_table(name_F, name_M, name_L, r_num)
+		begin
 		@db.execute "INSERT INTO Car_Owner_DMV(Owner_Name_F, Owner_Name_M, Owner_Name_L, Registration_num) VALUES ('#{name_F.delete!("'")}', '#{name_M.delete!("'")}', '#{name_L.delete!("'")}', #{r_num.to_i})"
+		rescue SQLite3::Exception => e 
+			puts e
+    			puts "You cannot insert this data!"
+		end
 	end
 
-	def delete_from_car(lp)
-		@db.execute "DELETE FROM Car WHERE License_Plate = '#{lp.delete!("'")}'"	
+	def delete_from_car_table(lp)
+		begin
+		@db.execute "DELETE FROM Car WHERE License_Plate = '#{lp.delete!("'")}'"
+		rescue SQLite3::Exception => e 
+			puts e
+    			puts "You cannot delete this data!"
+		end	
 	end
 
-	def delete_from_pp(pnum)
-		@db.execute "DELETE FROM Parking_Permit WHERE Permit_num = #{pnum.to_i}"		
+	def delete_from_parking_permit_table(pnum)
+		begin
+		@db.execute "DELETE FROM Parking_Permit WHERE Permit_num = #{pnum.to_i}"	
+		rescue SQLite3::Exception => e 
+			puts e
+    			puts "You cannot delete this data!"
+		end	
 	end
 
-	def insert_into_car(model, color, year_of_car, license_plate, owner_d_num)
-		@db.execute "INSERT INTO Car(Model, Color, Year_of_car, License_Plate, owner_d_num) VALUES ('#{model.delete!("'")}', '#{color.delete!("'")}', #{year_of_car.to_i}, '#{license_plate.delete!("'")}', #{owner_d_num.to_i})" 	
+	def insert_into_car_table(model, color, year_of_car, license_plate, owner_d_num)
+		begin
+		@db.execute "INSERT INTO Car(Model, Color, Year_of_car, License_Plate, owner_d_num) VALUES ('#{model.delete!("'")}', '#{color.delete!("'")}', #{year_of_car.to_i}, '#{license_plate.delete!("'")}', #{owner_d_num.to_i})" 		
+		rescue SQLite3::Exception => e 
+			puts e
+    			puts "You cannot insert this data!"
+		end
 	end
 
-	def insert_into_pp(type, length, permit_num, lp_CAR)
-		@db.execute "INSERT INTO Parking_Permit(Type, Length, Permit_num, Suspension, LP_CAR) VALUES ('#{type.delete!("'")}', '#{length.delete!("'")}', #{permit_num.to_i}, 'false', '#{lp_CAR.delete!("'")}')"
+	def insert_into_parking_permit_table(type, length, permit_num, lp_CAR)
+		begin
+		@db.execute "INSERT INTO Parking_Permit(Type, Length, Permit_num, Suspension, LP_CAR) VALUES ('#{type.delete!("'")}', '#{length.delete!("'")}', #{permit_num.to_i}, 'false', '#{lp_CAR.delete!("'")}')"		
+		rescue SQLite3::Exception => e 
+			puts e
+    			puts "You cannot insert this data!"
+		end
 	end
 
-	def insert_into_sco(fir, mid, las, dl_n, si_N, re_n, p_n, sig, pic, email, bd, per_add, curr_add)
-		@db.execute "INSERT INTO Car_Owner_SCHOOL(Owner_Name_F, Owner_Name_M, Owner_Name_L, Drivers_License_num, School_ID_NUM, regis_num, Phone_num, Signature, Picture,Email, Birthday, Per_add, Curr_add) VALUES ('#{fir.delete!("'")}', '#{mid.delete!("'")}', '#{las.delete!("'")}', #{dl_n.to_i}, #{si_N.to_i}, #{re_n.to_i}, #{p_n.to_i}, '#{sig.delete!("'")}', '#{pic.delete!("'")}', '#{email.delete!("'")}', '#{bd.delete!("'")}', '#{per_add.delete!("'")}', '#{curr_add.delete!("'")}')" 
+	def insert_into_school_owner_table(fir, mid, las, dl_n, si_N, re_n, p_n, sig, pic, email, bd, per_add, curr_add)
+		begin
+		@db.execute "INSERT INTO Car_Owner_SCHOOL(Owner_Name_F, Owner_Name_M, Owner_Name_L, Drivers_License_num, School_ID_NUM, regis_num, Phone_num, Signature, Picture,Email, Birthday, Per_add, Curr_add) VALUES ('#{fir.delete!("'")}', '#{mid.delete!("'")}', '#{las.delete!("'")}', #{dl_n.to_i}, #{si_N.to_i}, #{re_n.to_i}, #{p_n.to_i}, '#{sig.delete!("'")}', '#{pic.delete!("'")}', '#{email.delete!("'")}', '#{bd.delete!("'")}', '#{per_add.delete!("'")}', '#{curr_add.delete!("'")}')" 	
+		rescue SQLite3::Exception => e 
+			puts e
+    			puts "You cannot insert this data!"
+		end
 	end
 
 	def select_tickets()
 		puts @db.execute "SELECT *FROM Ticket"
 	end
 
-	def update_pp(type, length, permit_num, lp_CAR)
-		@db.execute "UPDATE Parking_Permit SET Type = '#{type.delete!("'")}', Length = '#{length.delete!("'")}' WHERE Permit_num = #{permit_num.to_i}"
+	def update_parking_permit_table(type, length, permit_num, lp_CAR)
+		begin
+		@db.execute "UPDATE Parking_Permit SET Type = '#{type.delete!("'")}', Length = '#{length.delete!("'")}' WHERE Permit_num = #{permit_num.to_i}"	
+		rescue SQLite3::Exception => e 
+			puts e
+    			puts "You cannot update this data!"
+		end
 	end
 	
-	def update_sco(name_F, name_M, name_L, dl_num, si_NUM, regis_num, phone_num, signature, picture, email, birthday, per_add, curr_add)
-		@db.execute "UPDATE Car_Owner_SCHOOL SET Owner_Name_F = '#{name_F.delete!("'")}', Owner_Name_M = '#{name_M.delete!("'")}', Owner_Name_L = '#{name_L.delete!("'")}', School_ID_NUM = #{si_NUM.to_i}, Phone_num = #{phone_num.to_i}, Signature = '#{signature.delete!("'")}', Picture = '#{picture.delete!("'")}', Email = '#{email.delete!("'")}', Birthday = '#{birthday.delete!("'")}', Per_add = '#{per_add.delete!("'")}', Curr_add = '#{curr_add.delete!("'")}' WHERE Drivers_License_num = #{dl_num.to_i}"
+	def update_school_owner_table(name_F, name_M, name_L, dl_num, si_NUM, regis_num, phone_num, signature, picture, email, birthday, per_add, curr_add)
+		begin
+		@db.execute @db.execute "UPDATE Car_Owner_SCHOOL SET Owner_Name_F = '#{name_F.delete!("'")}', Owner_Name_M = '#{name_M.delete!("'")}', Owner_Name_L = '#{name_L.delete!("'")}', School_ID_NUM = #{si_NUM.to_i}, Phone_num = #{phone_num.to_i}, Signature = '#{signature.delete!("'")}', Picture = '#{picture.delete!("'")}', Email = '#{email.delete!("'")}', Birthday = '#{birthday.delete!("'")}', Per_add = '#{per_add.delete!("'")}', Curr_add = '#{curr_add.delete!("'")}' WHERE Drivers_License_num = #{dl_num.to_i}"
+		rescue SQLite3::Exception => e 
+			puts e
+    			puts "You cannot update this data!"
+		end
 	end
 
-	def update_co(owner_Name_F, owner_Name_M, owner_Name_L, registration_num)
+	def update_dmv_table(owner_Name_F, owner_Name_M, owner_Name_L, registration_num)
+		begin
 		@db.execute "UPDATE Car_Owner_DMV SET Owner_Name_F = '#{owner_Name_F.delete!("'")}', Owner_Name_M = '#{owner_Name_M.delete!("'")}', Owner_Name_L = '#{owner_Name_L.delete!("'")}' WHERE Registration_num = #{registration_num.to_i}"
+		rescue SQLite3::Exception => e 
+			puts e
+    			puts "You cannot update this data!"
+		end
 	end
 
-	def update_car(model, color, year_of_car, license_Plate, owner_d_num)
+	def update_car_table(model, color, year_of_car, license_Plate, owner_d_num)
+		begin
 		@db.execute "UPDATE Car SET Model = '#{model.delete!("'")}', Color = '#{color.delete!("'")}', Year_of_car = #{year_of_car.to_i} WHERE License_Plate = '#{license_Plate.delete!("'")}'"
+		rescue SQLite3::Exception => e 
+			puts e
+    			puts "You cannot update this data!"
+		end
 	end
 end
 
@@ -157,7 +230,7 @@ def manage_database()
 end
 
 def insert()
-	@list = ["insert_into_co", "insert_into_sco", "insert_into_car", "insert_into_pp"]
+	@list = ["insert_into_dmv_table", "insert_into_school_owner_table", "insert_into_car_table", "insert_into_parking_permit_table"]
 	say("Which table to you want to insert new information?")
 	choose do |menu|
 		menu.choices(*@list) do |chosen| send(chosen) end
@@ -170,7 +243,7 @@ def insert()
 	end
 end
 
-def insert_into_sco()
+def insert_into_school_owner_table()
 	name_F = ask("Type the first name of the car owner: ")
 	name_M = ask("Type the middle name of the car owner: ")
 	name_L = ask("Type the last name of the car owner: ")
@@ -184,36 +257,36 @@ def insert_into_sco()
 	birthday = ask("Type the birthday of the car owner('YYYY-MM-DD'): ")
 	per_add = ask("Type the perminent address of the car owner: ")
 	curr_add = ask("Type the current of the car owner: ")
-	@DB.insert_into_sco(name_F, name_M, name_L, dl_num, si_NUM, regis_num, phone_num, signature, pic, email, birthday, per_add, curr_add)
+	@DB.insert_into_school_owner_table(name_F, name_M, name_L, dl_num, si_NUM, regis_num, phone_num, signature, pic, email, birthday, per_add, curr_add)
 end
 
-def insert_into_co()
+def insert_into_dmv_table()
 	owner_Name_F = ask("Type the first name of the car owner: ")
 	owner_Name_M = ask("Type the middle name of the car owner: ")
 	owner_Name_L = ask("Type the last name of the car owner: ")
 	registration_num = ask("Type the registration number of the car: ")
-	@DB.insert_into_co(owner_Name_F, owner_Name_M, owner_Name_L, registration_num)
+	@DB.insert_into_dmv_table(owner_Name_F, owner_Name_M, owner_Name_L, registration_num)
 end
 
-def insert_into_car()
+def insert_into_car_table()
 	model = ask("Type the model name of the car: ")
 	color = ask("Type the color of the car: ")
 	year_of_car = ask("Type the year of the car: ")
 	license_Plate = ask("Type the license plate number of the car: ")
 	owner_d_num = ask("Type the driver's license number of the car owner: ")
-	@DB.insert_into_car(model, color, year_of_car, license_Plate, owner_d_num)
+	@DB.insert_into_car_table(model, color, year_of_car, license_Plate, owner_d_num)
 end
 
-def insert_into_pp()
+def insert_into_parking_permit_table()
 	type = ask("Type the type of the parking permit: ")
 	length = ask("Type the length of the parking permit('YYYY-MM-DD'): ")
 	permit_num = ask("Type the parking permit number: ")
 	lp_CAR = ask("Type the license plate number of the car: ")
-	@DB.insert_into_pp(type, length, permit_num, lp_CAR)
+	@DB.insert_into_parking_permit_table(type, length, permit_num, lp_CAR)
 end
 
 def update()
-	@list = ["update_co", "update_sco", "update_car", "update_pp"]
+	@list = ["update_dmv_table", "update_school_owner_table", "update_car_table", "update_parking_permit_table"]
 	say("Which table to you want to update information?")
 	choose do |menu|
 		menu.choices(*@list) do |chosen| send(chosen) end
@@ -226,7 +299,7 @@ def update()
 	end
 end
 
-def update_sco()
+def update_school_owner_table()
 	name_F = ask("Type the first name of the car owner: ")
 	name_M = ask("Type the middle name of the car owner: ")
 	name_L = ask("Type the last name of the car owner: ")
@@ -240,36 +313,36 @@ def update_sco()
 	birthday = ask("Type the birthday of the car owner('YYYY-MM-DD'): ")
 	per_add = ask("Type the perminent address of the car owner: ")
 	curr_add = ask("Type the current of the car owner: ")
-	@DB.update_sco(name_F, name_M, name_L, dl_num, si_NUM, regis_num, phone_num, signature, picture, email, birthday, per_add, curr_add)
+	@DB.update_school_owner_table(name_F, name_M, name_L, dl_num, si_NUM, regis_num, phone_num, signature, picture, email, birthday, per_add, curr_add)
 end
 
-def update_co()
+def update_dmv_table()
 	owner_Name_F = ask("Type the first name of the car owner: ")
 	owner_Name_M = ask("Type the middle name of the car owner: ")
 	owner_Name_L = ask("Type the last name of the car owner: ")
 	registration_num = ask("Type the registration number of the car: ")
-	@DB.update_co(owner_Name_F, owner_Name_M, owner_Name_L, registration_num)
+	@DB.update_dmv_table(owner_Name_F, owner_Name_M, owner_Name_L, registration_num)
 end
 
-def update_car()
+def update_car_table()
 	model = ask("Type the model name of the car: ")
 	color = ask("Type the color of the car: ")
 	year_of_car = ask("Type the year of the car: ")
 	license_Plate = ask("Type the license plate number of the car: ")
 	owner_d_num = ask("Type the driver's license number of the car owner: ")
-	@DB.update_car(model, color, year_of_car, license_Plate, owner_d_num)
+	@DB.update_car_table(model, color, year_of_car, license_Plate, owner_d_num)
 end
 
-def update_pp()
+def update_parking_permit_table()
 	type = ask("Type the type of the parking permit: ")
 	length = ask("Type the length of the parking permit('YYYY-MM-DD'): ")
 	permit_num = ask("Type the parking permit number: ")
 	lp_CAR = ask("Type the license plate number of the car: ")
-	@DB.update_pp(type, length, permit_num, lp_CAR)
+	@DB.update_parking_permit_table(type, length, permit_num, lp_CAR)
 end
 
 def delete()
-	@list = ["delete_from_co", "delete_from_sco", "delete_from_car", "delete_from_pp"]
+	@list = ["delete_from_dmv_table", "delete_from_school_owner_table", "delete_from_car_table", "delete_from_parking_permit_table"]
 	say("Which table to you want to delete information?")
 	choose do |menu|
 		menu.choices(*@list) do |chosen| send(chosen) end
@@ -282,24 +355,24 @@ def delete()
 	end
 end
 
-def delete_from_sco()
+def delete_from_school_owner_table()
 	dnum = ask("Type the driver's license number of the person you want to delete: ")
-	@DB.delete_from_sco(dnum)
+	@DB.delete_from_school_owner_table(dnum)
 end
 
-def delete_from_co()
+def delete_from_dmv_table()
 	rnum = ask("Type the car registration number of the person you want to delete: ")
-	@DB.delete_from_co(rnum)
+	@DB.delete_from_dmv_table(rnum)
 end
 
-def delete_from_car()
+def delete_from_car_table()
 	lp = ask("Type the plate number of the car you want to delete: ")
-	@DB.delete_from_car(lp)
+	@DB.delete_from_car_table(lp)
 end
 
-def delete_from_pp()
+def delete_from_parking_permit_table()
 	pnum = ask("Type the permit number of the car you want to delete: ").to_i
-	@DB.delete_from_pp(pnum)
+	@DB.delete_from_parking_permit_table(pnum)
 end
 
 def check_info()
@@ -312,7 +385,7 @@ def check_info()
 end
 
 def check_table()
-	@list = ["check_co", "check_sco", "check_car", "check_pp"]
+	@list = ["check_dmv_table", "check_school_owner_table", "check_car_table", "check_parking_permit_table"]
 	say("Which table do you want to check?")
 	choose do |menu|
 		menu.choices(*@list) do |chosen| send(chosen) end
@@ -320,39 +393,39 @@ def check_table()
 	end
 end
 
-def check_sco()
-	@list = ["check_sco"]
+def check_school_owner_table()
+	@list = ["check_school_owner_table"]
 	@DB.select_sco()
 	say("What do you want to do now?")
 	choose do |menu|
-		menu.choice :"check_sco" do check_sco() end
+		menu.choice :"check_school_owner_table" do check_school_owner_table() end
 		menu.choice :"go back" do check_table() end
 	end
 end
 
-def check_co()
+def check_dmv_table()
 	@DB.select_co()
 	say("What do you want to do now?")
 	choose do |menu|
-		menu.choice :"check_co" do check_co() end
+		menu.choice :"check_dmv_table" do check_dmv_table() end
 		menu.choice :"go back" do check_table() end
 	end
 end
 
-def check_car()
+def check_car_table()
 	@DB.select_car()
 	say("What do you want to do now?")
 	choose do |menu|
-		menu.choice :"check_car" do check_car() end
+		menu.choice :"check_car_table" do check_car_table() end
 		menu.choice :"go back" do check_table() end
 	end
 end
 
-def check_pp()
+def check_parking_permit_table()
 	@DB.select_pp()
 	say("What do you want to do now?")
 	choose do |menu|
-		menu.choice :"check_pp" do check_pp() end
+		menu.choice :"check_parking_permit_table" do check_parking_permit_table() end
 		menu.choice :"go back" do check_table() end
 	end
 end
