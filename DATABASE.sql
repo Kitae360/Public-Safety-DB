@@ -1,3 +1,6 @@
+.header on
+.mode column
+
 CREATE TABLE Car_Owner_DMV(
 Owner_Name_F TEXT,
 Owner_Name_M TEXT,
@@ -40,7 +43,7 @@ Type TEXT,
 Length DATE,
 Permit_num INTEGER,
 Suspension BOOLEAN,
-LP_CAR TEXT,
+LP_CAR TEXT UNIQUE,
 PRIMARY KEY (Permit_num),
 FOREIGN KEY (LP_CAR) REFERENCES Car(License_Plate)
 );
