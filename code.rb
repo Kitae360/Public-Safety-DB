@@ -89,7 +89,7 @@ class Database
 
 	def insert_into_dmv_table(name_F, name_M, name_L, r_num)
 		begin
-		@db.execute "INSERT INTO Car_Owner_DMV(Owner_Name_F, Owner_Name_M, Owner_Name_L, Registration_num) VALUES ('#{name_F}', '#{name_M}', '#{name_L}', #{r_num.to_i})"
+		@db.execute "INSERT INTO Car_Owner_DMV(Owner_Name_F, Owner_Name_M, Owner_Name_L, Registration_num) VALUES ('#{name_F.delete!("'")}', '#{name_M.delete!("'")}', '#{name_L.delete!("'")}', #{r_num.to_i})"
 		rescue SQLite3::Exception => e 
 			puts e
     			puts "You cannot insert this data!"
@@ -98,7 +98,7 @@ class Database
 
 	def delete_from_car_table(lp)
 		begin
-		@db.execute "DELETE FROM Car WHERE License_Plate = '#{lp}'"
+		@db.execute "DELETE FROM Car WHERE License_Plate = '#{lp.delete!("'")}'"
 		rescue SQLite3::Exception => e 
 			puts e
     			puts "You cannot delete this data!"
@@ -116,7 +116,7 @@ class Database
 
 	def insert_into_car_table(model, color, year_of_car, license_plate, owner_d_num)
 		begin
-		@db.execute "INSERT INTO Car(Model, Color, Year_of_car, License_Plate, owner_d_num) VALUES ('#{model}', '#{color}', #{year_of_car.to_i}, '#{license_plate}', #{owner_d_num.to_i})" 		
+		@db.execute "INSERT INTO Car(Model, Color, Year_of_car, License_Plate, owner_d_num) VALUES ('#{model.delete!("'")}', '#{color.delete!("'")}', #{year_of_car.to_i}, '#{license_plate.delete!("'")}', #{owner_d_num.to_i})" 		
 		rescue SQLite3::Exception => e 
 			puts e
     			puts "You cannot insert this data!"
@@ -125,7 +125,7 @@ class Database
 
 	def insert_into_parking_permit_table(type, length, permit_num, lp_CAR)
 		begin
-		@db.execute "INSERT INTO Parking_Permit(Type, Length, Permit_num, Suspension, LP_CAR) VALUES ('#{type}', '#{length}', #{permit_num.to_i}, 'false', '#{lp_CAR}')"		
+		@db.execute "INSERT INTO Parking_Permit(Type, Length, Permit_num, Suspension, LP_CAR) VALUES ('#{type.delete!("'")}', '#{length.delete!("'")}', #{permit_num.to_i}, 'false', '#{lp_CAR.delete!("'")}')"		
 		rescue SQLite3::Exception => e 
 			puts e
     			puts "You cannot insert this data!"
@@ -134,7 +134,7 @@ class Database
 
 	def insert_into_school_owner_table(fir, mid, las, dl_n, si_N, re_n, p_n, sig, pic, email, bd, per_add, curr_add)
 		begin
-		@db.execute "INSERT INTO Car_Owner_SCHOOL(Owner_Name_F, Owner_Name_M, Owner_Name_L, Drivers_License_num, School_ID_NUM, regis_num, Phone_num, Signature, Picture,Email, Birthday, Per_add, Curr_add) VALUES ('#{fir}', '#{mid}', '#{las}', #{dl_n.to_i}, #{si_N.to_i}, #{re_n.to_i}, #{p_n.to_i}, '#{sig}', '#{pic}', '#{email}', '#{bd}', '#{per_add}', '#{curr_add}')" 	
+		@db.execute "INSERT INTO Car_Owner_SCHOOL(Owner_Name_F, Owner_Name_M, Owner_Name_L, Drivers_License_num, School_ID_NUM, regis_num, Phone_num, Signature, Picture,Email, Birthday, Per_add, Curr_add) VALUES ('#{fir.delete!("'")}', '#{mid.delete!("'")}', '#{las.delete!("'")}', #{dl_n.to_i}, #{si_N.to_i}, #{re_n.to_i}, #{p_n.to_i}, '#{sig.delete!("'")}', '#{pic.delete!("'")}', '#{email.delete!("'")}', '#{bd.delete!("'")}', '#{per_add.delete!("'")}', '#{curr_add.delete!("'")}')" 	
 		rescue SQLite3::Exception => e 
 			puts e
     			puts "You cannot insert this data!"
@@ -147,7 +147,7 @@ class Database
 
 	def update_parking_permit_table(type, length, permit_num, lp_CAR)
 		begin
-		@db.execute "UPDATE Parking_Permit SET Type = '#{type}', Length = '#{length}' WHERE Permit_num = #{permit_num.to_i}"	
+		@db.execute "UPDATE Parking_Permit SET Type = '#{type.delete!("'")}', Length = '#{length.delete!("'")}' WHERE Permit_num = #{permit_num.to_i}"	
 		rescue SQLite3::Exception => e 
 			puts e
     			puts "You cannot update this data!"
@@ -156,7 +156,7 @@ class Database
 	
 	def update_school_owner_table(name_F, name_M, name_L, dl_num, si_NUM, regis_num, phone_num, signature, picture, email, birthday, per_add, curr_add)
 		begin
-		@db.execute @db.execute "UPDATE Car_Owner_SCHOOL SET Owner_Name_F = '#{name_F}', Owner_Name_M = '#{name_M}', Owner_Name_L = '#{name_L}', School_ID_NUM = #{si_NUM.to_i}, Phone_num = #{phone_num.to_i}, Signature = '#{signature}', Picture = '#{picture}', Email = '#{email}', Birthday = '#{birthday}', Per_add = '#{per_add}', Curr_add = '#{curr_add}' WHERE Drivers_License_num = #{dl_num.to_i}"
+		@db.execute @db.execute "UPDATE Car_Owner_SCHOOL SET Owner_Name_F = '#{name_F.delete!("'")}', Owner_Name_M = '#{name_M.delete!("'")}', Owner_Name_L = '#{name_L.delete!("'")}', School_ID_NUM = #{si_NUM.to_i}, Phone_num = #{phone_num.to_i}, Signature = '#{signature.delete!("'")}', Picture = '#{picture.delete!("'")}', Email = '#{email.delete!("'")}', Birthday = '#{birthday.delete!("'")}', Per_add = '#{per_add.delete!("'")}', Curr_add = '#{curr_add.delete!("'")}' WHERE Drivers_License_num = #{dl_num.to_i}"
 		rescue SQLite3::Exception => e 
 			puts e
     			puts "You cannot update this data!"
@@ -165,7 +165,7 @@ class Database
 
 	def update_dmv_table(owner_Name_F, owner_Name_M, owner_Name_L, registration_num)
 		begin
-		@db.execute "UPDATE Car_Owner_DMV SET Owner_Name_F = '#{owner_Name_F}', Owner_Name_M = '#{owner_Name_M}', Owner_Name_L = '#{owner_Name_L}' WHERE Registration_num = #{registration_num.to_i}"
+		@db.execute "UPDATE Car_Owner_DMV SET Owner_Name_F = '#{owner_Name_F.delete!("'")}', Owner_Name_M = '#{owner_Name_M.delete!("'")}', Owner_Name_L = '#{owner_Name_L.delete!("'")}' WHERE Registration_num = #{registration_num.to_i}"
 		rescue SQLite3::Exception => e 
 			puts e
     			puts "You cannot update this data!"
@@ -174,7 +174,7 @@ class Database
 
 	def update_car_table(model, color, year_of_car, license_Plate, owner_d_num)
 		begin
-		@db.execute "UPDATE Car SET Model = '#{model}', Color = '#{color}', Year_of_car = #{year_of_car.to_i} WHERE License_Plate = '#{license_Plate}'"
+		@db.execute "UPDATE Car SET Model = '#{model.delete!("'")}', Color = '#{color.delete!("'")}', Year_of_car = #{year_of_car.to_i} WHERE License_Plate = '#{license_Plate.delete!("'")}'"
 		rescue SQLite3::Exception => e 
 			puts e
     			puts "You cannot update this data!"
