@@ -409,7 +409,7 @@ end
 
 #collect data and insert into car table
 def insert_car_info()
-	if (@DB.check_co_exist() == [[1]])
+	if (@DB.check_sco_exist() == [[1]])
 	say("Here is the list of existing car owners")
 	@DB.select_sco()
 	owner_d_num = ask("Type the driver's license number of the car owner: ")
