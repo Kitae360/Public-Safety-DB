@@ -6,10 +6,14 @@ Please follow read me instructions to run the code
 1. ruby 2.2.1p85 (2015-02-26 revision 49769)
 2. SQLite version 3.8.2 2013-12-06 
 3. Gem Highline
+4. Gem Minitest
 
 # How to run
 1. Download all files that are uploaded
-2. put them in the same file and run the code
+2. put them in the same file
+3. Run run.rb to run the code
+4. Run test.rb to test helper functions
+5. Run crudTest.rb to test create, read, update, and delete functions.
 
 #About the code
 1. When you log in, you need I.D. and password. (ID: kswag Password: 1234)
