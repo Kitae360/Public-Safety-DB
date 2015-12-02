@@ -5,8 +5,8 @@
 3. permit type
 4. permit length (time of usability)
 5. permit number
-## The last four types of data will be stored under the stndent name
-## User can type students name for their information (last four types of data)
+6. The last four types of data will be stored under the stndent name
+7. User can type students name for their information (last four types of data)
 
 # Basic:
 ## Further implementation of data types:
@@ -17,9 +17,9 @@
 5. car model name
 6. car color
 7. registeation number
-8.Insurance ID number
-## User can locate student's information(list from Skeleton and Basic) by typing student ID, car model, and permit type (car model/ permit type, if more than one repeated model/permit, can show one to any amount of students with the same car model)
-## User is able to delete, replace, and modify information (Skeleton, Basic) from the database
+8. Insurance ID number
+9. User can locate student's information(list from Skeleton and Basic) by typing student ID, car model, and permit type (car model/ permit type, if more than one repeated model/permit, can show one to any amount of students with the same car model)
+10. User is able to delete, replace, and modify information (Skeleton, Basic) from the database
 
 #Solid:
 ## Futher implementations data types:
@@ -31,14 +31,14 @@
 6. home address(current & permanent)
 7. tickets (price of tickets, reason, how many tickets)
 8. amount of parking spots (counter)
-## Add multiple student registration (information from Skeleton, Basic, & Solid)
-## Track amount of parking spots taken
-##Can sort student information (Skeleton, Basic, Solid) by alphabet (by name), car, model, or parking permit
+9. Add multiple student registration (information from Skeleton, Basic, & Solid)
+10. Track amount of parking spots taken
+11. Can sort student information (Skeleton, Basic, Solid) by alphabet (by name), car, model, or parking permit
 
 #Awesome:
-##user can type in any kind of available information to gain any ##students information(Sjeketon, Basic, Solid, & Awesome)
-1. Length of suspension for parking permit
-2. signature(image, proof of contract)
-3. student picture
+1. user can type in any kind of available information to gain any students information(Sjeketon, Basic, Solid, & Awesome)
+2. Length of suspension for parking permit
+3. signature(image, proof of contract)
+4. student picture
 
 
