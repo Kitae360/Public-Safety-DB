@@ -11,12 +11,11 @@ Please follow read me instructions to run the code
 # How to run
 1. Download all files that are uploaded
 2. put them in the same file
-3. Run run.rb to run the code
-4. Run test.rb to test helper functions
-5. Run crudTest.rb to test create, read, update, and delete functions.
+3. Run code.rb to run the code
 
 #About the code
 1. When you log in, you need I.D. and password. (ID: kswag Password: 1234)
-2. You can check the data type of the attributes in DATABASE.sql file
-3. For now, picture attribute in Car Owner Student table has TEXT data type. So when you insert, update the  Car Owner Student table, keep this in mind.
+2. You can check the data type of the attributes in data.sql file
+3. Manage ticket is not implemented
+
 
