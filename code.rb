@@ -153,6 +153,14 @@ def select_people_data()
 	puts @db.execute "SELECT *FROM People"
 end
 
+def select_student_data()
+	puts @db.execute "select *FROM People JOIN Student ON People.Person_ID = Student.Person_ID"
+end
+
+def select_faculty_data()
+	puts @db.execute "select *FROM People JOIN Faculty ON People.Person_ID = Faculty.Person_ID"
+end
+
 def select_car_data()
 	puts @db.execute "SELECT *FROM Car"
 end
@@ -161,7 +169,35 @@ def select_permit_data()
 	puts @db.execute "SELECT *FROM Parking_Permit"
 end
 
+def insert_ticket(lp, tn, pr, du, rea, from)
+	@db.execute "INSERT INTO Ticket(License_plate_num, ticket_num, price, due_date, reason, from_who, statue) VALUES ('#{lp}', '#{tn}', '#{pr}','#{du}', '#{rea}', '#{from}', 'unpaid')"
 end
+
+def update_ticket(tn)
+	@db.execute "UPDATE Ticket SET statue = 'paid' WHERE ticket_num = '#{tn}'"
+end
+
+def check_ticket(tn)
+	puts @db.execute "select *FROM Ticket WHERE ticket_num = '#{tn}'"		
+end
+
+def check_ticket_exist_lp(lp)
+	@db.execute "SELECT EXISTS (SELECT *FROM Ticket WHERE License_plate_num = '#{lp}')"
+end
+
+def get_ticnum_with_lp(lp)
+	a = @db.execute "SELECT ticket_num FROM Ticket WHERE License_plate_num = '#{lp}'"
+	b = a[0]
+	c = b[0]
+	return c
+end
+
+def delete_ticket_info(c)
+	@db.execute "DELETE FROM Ticket WHERE ticket_num = '#{c}'"
+end
+
+end
+
 
 class Menu
 
@@ -230,14 +266,14 @@ end
 
 
 def insert_person_info()
-	id = ask("What is the ID of the person?: ", String)
+	id = question("What is the ID of the person?: ")
 	if @DB.check_exist_person_with_id(id) == [[0]]
-	f =  ask("What is the first name of the person?: ", String)
-	l = ask("What is the last name of the person?: ", String) 
-	e = ask("What is the email of the person?: ", String) 
-	dn = ask("What is the driver's license number of the person?: ", String) 
-	ha = ask("What is the home address of the person?: ", String) 
-	ca = ask("What is the current address of the person?: ", String)
+	f =  question("What is the first name of the person?: ")
+	l = question("What is the last name of the person?: ") 
+	e = question("What is the email of the person?: ") 
+	dn = question("What is the driver's license number of the person?: ") 
+	ha = question("What is the home address of the person?: ") 
+	ca = question("What is the current address of the person?: ")
 	if HighLine.agree("Is this data correct? #{f}, #{l}, #{e}, #{dn}, #{ha}, #{ca} (y/n)") == true
 		@DB.insert_into_people(f,l,id,e,dn,ha,ca)
 	if HighLine.agree("Is this person a student?(y/n): ") == true
@@ -263,8 +299,8 @@ end
 
 def add_student_info(id)
 	id = id
-	cl = ask("What is class standing of this person?: ", String) 
-	d = ask("Which dorm does this person live in?: ", String) 
+	cl = question("What is class standing of this person?: ") 
+	d = question("Which dorm does this person live in?: ") 
 	if HighLine.agree("Is this data correct? #{cl}, #{d} (y/n)") == true
 		@DB.insert_into_student(id, cl, d)
 	else
@@ -275,7 +311,7 @@ end
 
 def add_faculty_info(id)
 	id = id
-	de = ask("What department does this person work in?: ", String) 
+	de = question("What department does this person work in?: ") 
 	if HighLine.agree("Is this data correct? #{de} (y/n)") == true
 		@DB.insert_into_faculty(id, de)
 	else
@@ -286,8 +322,8 @@ end
 
 def add_dmv_owner_info(id)
 	id = id
-	f =  ask("What is the first name of the car owner in DMV?: ", String)
-	l = ask("What is the last name of the car owner in DMV?: ", String) 
+	f =  question("What is the first name of the car owner in DMV?: ")
+	l = question("What is the last name of the car owner in DMV?: ") 
 	if HighLine.agree("Is this data correct? #{f}, #{l} (y/n)") == true
 		@DB.insert_into_dvm(f,l,id)
 	else
@@ -297,11 +333,11 @@ def add_dmv_owner_info(id)
 end
 
 def insert_car_info()
-	l = ask("What is the license plate number of the car?: ", String)
+	l = question("What is the license plate number of the car?: ")
 	if @DB.check_exist_car_with_lp(l) == [[0]]
-	r =  ask("What is the registeration number of the car?: ", String)
-	c = ask("What is the color of the car?: ", String) 
-	m = ask("What is the model of the car?: ", String) 
+	r =  question("What is the registeration number of the car?: ")
+	c = question("What is the color of the car?: ") 
+	m = question("What is the model of the car?: ") 
 	if HighLine.agree("Is this data correct? #{l}, #{r}, #{c}, #{m} (y/n)") == true
 		@DB.insert_into_car(l, r, c, m)
 	else
@@ -318,9 +354,9 @@ def insert_parking_permit_info()
 	lp = find_car_info()
 	if lp != nil
 	if @DB.check_exist_permit_with_lp(lp) == [[0]]
-	p =  ask("What is the permit number?: ", String)
+	p =  question("What is the permit number?: ")
 	if @DB.check_exist_permit_with_pn(p) == [[0]]
-	y = ask("What is the type of the permit?: ", String)
+	y = question("What is the type of the permit?: ")
 	if HighLine.agree("Is this data correct? #{id}, #{lp}, #{p}, #{y} (y/n)") == true
 		@DB.insert_into_permit(id, lp, p, y)
 	else 
@@ -356,12 +392,12 @@ def update_person_info()
 	if @DB.check_people_exist() == [[1]]
 	id = find_person_info()
 	if id != nil
-	f =  ask("What is the first name of the person?: ", String)
-	l = ask("What is the last name of the person?: ", String) 
-	e = ask("What is the email of the person?: ", String) 
-	dn = ask("What is the driver's license number of the person?: ", String) 
-	ha = ask("What is the home address of the person?: ", String) 
-	ca = ask("What is the current address of the person?: ", String)
+	f =  question("What is the first name of the person?: ")
+	l = question("What is the last name of the person?: ") 
+	e = question("What is the email of the person?: ") 
+	dn = question("What is the driver's license number of the person?: ") 
+	ha = question("What is the home address of the person?: ") 
+	ca = question("What is the current address of the person?: ")
 	if HighLine.agree("Is this data correct? #{f}, #{l}, #{e}, #{dn}, #{ha}, #{ca} (y/n)") == true
 		@DB.update_into_people(f,l,id,e,dn,ha,ca)
 		@DB.delete_person_info_side(id)
@@ -392,9 +428,9 @@ def update_car_info()
 	if @DB.check_car_exist() == [[1]]
 	l = find_car_info()
 	if l != nil
-	r =  ask("What is the registeration number of the car?: ", String)
-	c = ask("What is the color of the car?: ", String) 
-	m = ask("What is the model of the car?: ", String) 
+	r =  question("What is the registeration number of the car?: ")
+	c = question("What is the color of the car?: ") 
+	m = question("What is the model of the car?: ") 
 	if HighLine.agree("Is this data correct? #{l}, #{r}, #{c}, #{m} (y/n)") == true
 		@DB.update_into_car(l, r, c, m)
 	else
@@ -409,9 +445,9 @@ end
 
 def update_parking_permit_info()
 	if @DB.check_permit_exist() == [[1]]
-	pn = ask("What is the parking permit number?")
+	pn = question("What is the parking permit number?")
 	if check_exist_permit_with_pn(pn) == [[1]]
-	y = ask("What is the type of the permit?: ", String)
+	y = question("What is the type of the permit?: ")
 	if HighLine.agree("Is this data correct? #{pn}, #{y} (y/n)") == true
 		@DB.update_parking_permit(pn, y)
 	else
@@ -449,10 +485,7 @@ def delete_person_info()
 		@DB.delete_person_info_main(id)
 	else 
 	if HighLine.agree("There is a parking permit attached to it. Do you want to erase parking permit also? (y/n)") == true
-		p = @DB.get_permit_with_id(id)
-		@DB.delete_parking_permit(p)
-		@DB.delete_person_info_side(id)
-		@DB.delete_person_info_main(id)
+		delete_permit_before_peo(id)
 	else say("Then you cannot erase this car information")
 	end
 	end
@@ -462,16 +495,23 @@ def delete_person_info()
 	end
 end
 
+def delete_permit_before_peo(id)
+	p = @DB.get_permit_with_id(id)	
+	@DB.delete_parking_permit(p)
+	@DB.delete_person_info_side(id)
+	@DB.delete_person_info_main(id)
+end
+
 def delete_car_info()
 	if @DB.check_car_exist() == [[1]]
 	lp = find_car_info()
 	if lp != nil
-	if @DB.check_exist_permit_with_lp(lp) == [[0]]
+	if (@DB.check_exist_permit_with_lp(lp) == [[0]] and @DB.check_ticket_exist_lp(lp) == [[0]])
 		@DB.delete_car_info(lp)
 	else 
-	if HighLine.agree("There is a parking permit attached to it. Do you want to erase parking permit also? (y/n)") == true
-		p = @DB.get_permit_with_lp(lp)
-		@DB.delete_parking_permit(p)
+	if HighLine.agree("There is a parking permit and/or tickets attached to it. Do you want to erase those data also? (y/n)") == true
+		delete_permit_before_car(lp)
+		delete_ticket(lp)
 		@DB.delete_car_info(lp)
 	else say("Then you cannot erase this car information")
 	end
@@ -482,9 +522,25 @@ def delete_car_info()
 	end
 end
 
+def delete_permit_before_car(lp)
+	if @DB.check_exist_permit_with_lp(lp) == [[1]]
+	p = @DB.get_permit_with_lp(lp)
+	@DB.delete_parking_permit(p)
+	else nil 
+	end
+end
+
+def delete_ticket(lp)
+	if @DB.check_ticket_exist_lp(lp) == [[1]]
+	p = @DB.get_ticnum_with_lp(lp)
+	@DB.delete_ticket_info(p)
+	else nil
+	end
+end
+
 def delete_parking_permit_info()
 	if @DB.check_permit_exist() == [[1]]
-	p =  ask("What is the permit number?: ", String)
+	p =  question("What is the permit number?: ")
 	if @DB.check_exist_permit_with_pn(p) == [[1]]
 		@DB.delete_parking_permit(p)
 	else say("Parking permit with given permit number doesn't exist")
@@ -494,7 +550,7 @@ def delete_parking_permit_info()
 end
 
 def find_person_with_id()
-	id = ask("What is the ID of the person?: ", String)
+	id = question("What is the ID of the person?: ")
 	if @DB.check_exist_person_with_id(id) == [[1]]
 		return id
 	else say("Person with given ID does not exist")
@@ -503,12 +559,12 @@ def find_person_with_id()
 end
 
 def find_person_with_name()
-	fn =  ask("What is the first name of the person?: ", String)
-	ln = ask("What is the last name of the person?: ", String) 
+	fn =  question("What is the first name of the person?: ")
+	ln = question("What is the last name of the person?: ") 
 	if @DB.check_exist_person_with_name(fn, ln) == [[1]]
 		puts @DB.select_person_with_name_all(fn, ln)
 		list = @DB.select_person_with_name_id(fn, ln)
-		num = ask("Type the number of the one that you were looking for")
+		num = question("Type the number of the one that you were looking for")
 		a = list[num.to_i - 1]
 		b = a[0]
 			return b
@@ -518,7 +574,7 @@ def find_person_with_name()
 end
 
 def find_car_with_lp()
-	lp = ask("What is the license plate number of the car?: ", String)
+	lp = question("What is the license plate number of the car?: ")
 	if @DB.check_exist_car_with_lp(lp) == [[1]]
 		return lp
 	else say("Car with given license plate number does not exist")
@@ -527,11 +583,11 @@ def find_car_with_lp()
 end
 
 def find_car_with_model()
-	model = ask("What is the model of the car?: ", String) 
+	model = question("What is the model of the car?: ") 
 	if @DB.check_exist_car_with_model(model) == [[1]]
 		puts @DB.select_car_with_model_all(model)
 		list = @DB.select_car_with_model_lp(model)
-		num = ask("Type the number of the one that you were looking for")
+		num = question("Type the number of the one that you were looking for")
 		a = list[num.to_i - 1]
 		b = a[0]
 			return b
@@ -620,8 +676,72 @@ def search_car_data()
 end
 
 def search_permit_data()
-	pn = ask("What is the permit number?: ", String)
+	pn = question("What is the permit number?: ")
 	@DB.select_with_pn(pn)
+end
+
+def manage_ticket()
+	@list = ["give_ticket", "pay_ticket", "search_ticket"]
+	say("How do you want to manage ticket?")
+	choose do |menu|
+		menu.choices(*@list) do |chosen| send(chosen) end
+		menu.choice :"go back" do options() end
+	end
+end
+
+def give_ticket()
+	insert_ticket()
+	say("What do you want to do now?")
+	choose do |menu|
+		menu.choice :"give_ticket" do give_ticket() end
+		menu.choice :"go back" do manage_ticket() end
+	end
+end
+
+def insert_ticket()
+	lp = question("Type the license plate number of the car: ")
+	tn = question("Type ticket number: ")
+	pr = question("Type the price of the ticket: ")
+	du = question("Type ticket's due date('YYYY-MM-DD'): ")
+	rea = question("Type the reason of the ticket: ")	
+	from = question("Type who is giving the ticket: ")
+	@DB.insert_ticket(lp, tn, pr, du, rea, from)
+end
+
+def pay_ticket()
+	pay_ticket_fuc()
+	say("What do you want to do now?")
+	choose do |menu|
+		menu.choice :"pay_ticket" do pay_ticket() end
+		menu.choice :"go back" do manage_ticket() end
+	end
+end
+
+def pay_ticket_fuc()
+	tn = question("Type ticket number: ")
+	@DB.update_ticket(tn)
+end
+
+
+def search_ticket()
+	check_ticket_func()
+	say("What do you want to do now?")
+	choose do |menu|
+		menu.choice :"serch ticket" do search_ticket() end
+		menu.choice :"go back" do manage_ticket() end
+	end
+end
+
+def check_ticket_func()
+	tn = question("Type ticket number: ")
+	@DB.check_ticket(tn)
+end
+
+def question(question)
+	ask(question) do |q|
+	q.responses[:not_valid] = "Your input cannot be empty"
+	q.validate = Proc.new {|d| d != ""}
+	end
 end
 
 end

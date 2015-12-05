@@ -50,21 +50,17 @@ FOREIGN KEY (Person_ID) REFERENCES People(Person_ID),
 FOREIGN KEY (License_plate_num) REFERENCES Car(License_plate_num)
 );
 
-CREATE TABLE IF NOT EXISTS Ticket_to_permit(
-permit_num TEXT,
+CREATE TABLE IF NOT EXISTS Ticket(
+License_plate_num TEXT,
 ticket_num TEXT, 
 price INTEGER, 
-due_date DATE, 
+due_date TEXT,
 reason TEXT, 
 from_who TEXT,
-PRIMARY KEY (ticket_num)
-FOREIGN KEY (permit_num) REFERENCES Parking_Permit(Permit_num),
+statue TEXT,
+PRIMARY KEY (ticket_num),
+FOREIGN KEY (License_plate_num) REFERENCES Car(License_plate_num)
 );
 
-CREATE TABLE IF NOT EXISTS Ticket_without_permit(
-ticket_num TEXT, 
-license_plate_num TEXT,
-PRIMARY KEY (ticket_num)
-);
 
 
