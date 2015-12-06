@@ -16,6 +16,5 @@ Please follow read me instructions to run the code
 #About the code
 1. When you log in, you need I.D. and password. (ID: kswag Password: 1234)
 2. You can check the data type of the attributes in data.sql file
-3. Manage ticket is not implemented
 
 
