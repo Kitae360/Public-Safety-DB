@@ -1,22 +1,23 @@
 require 'highline/import'
 require 'sqlite3'
-
+#Select Exists functions check if data with given condition exists
+#if it exists, it returns 1, if it doesn't, returns 0
 class Database
 
 def initialize()
-	create_database()
-	@db = SQLite3::Database.open 'f.db'	
+	create_database() #Creation of database file
+	@db = SQLite3::Database.open 'ps.db'	
 end
 
-#create the database file if it does not exist.
+#Use piping to apply SQL commands if the given database file does not exist
 def create_database()
-	puts `sqlite3 f.db < data.sql`
+	puts `sqlite3 ps.db < data.sql`
 end
-
+#Functions down below consist of sql commands that correlate to specific tables
 def insert_into_people(f,l,id,e,dn,ha,ca)
 	@db.execute("INSERT INTO People (first_name, last_name, Person_ID, email,  driver_license_num, home_address, current_address) VALUES (?,?,?,?,?,?,?)", [f,l,id,e,dn,ha,ca])
 end
-
+#The parameters represent the user's input and are placed directly in the database
 def update_into_people(f,l,id,e,dn,ha,ca)
 	@db.execute("UPDATE People SET first_name = (?), last_name = (?), email = (?), driver_license_num = (?), home_address = (?), current_address = (?) WHERE Person_ID = (?)", [f,l,e,dn,ha,ca, id])
 end
@@ -144,7 +145,7 @@ def delete_person_info_side(id)
 end
 
 def get_permit_with_lp(lp)
-	pn = @db.execute("SELECT Permit_num FROM Parking_Permit WHERE License_plate_num = (?)", [lp])
+	pn = @db.execute("SELECT Permit_num FROM Parking_Permit WHERE License_plate_num = (?)", [lp])#Checks permit with license plate number. Function below does the same.
 	p = pn[0] 
 	a = p[0]
 	return a
@@ -156,7 +157,7 @@ def get_permit_with_id(id)
 	a = p[0]
 	return a
 end
-
+#Basic SQL commands in seperate functions for ease of calling a command
 def select_people_data()
 	puts @db.execute "SELECT *FROM People"
 end

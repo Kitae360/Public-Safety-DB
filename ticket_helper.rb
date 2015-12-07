@@ -11,9 +11,9 @@ def initialize()
 end
 
 def insert_ticket()
-	tn = @help.question("Type ticket number: ")
+	tn = @help.question("\n\nType ticket number: ")
 	if @DB.check_ticnum_exist(tn) == [[0]]
-	lp = @help.question("Type the license plate number of the car: ")
+	lp = @help.question("Type the license plate number: ")
 	if @DB.check_car_exist_lp(lp) == [[1]]
 	pr = ask("Type the price of the ticket: ", Integer)
 	du = ask("Type ticket's due date('YYYY-MM-DD'): ")
