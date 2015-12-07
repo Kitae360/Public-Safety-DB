@@ -12,7 +12,8 @@ Please follow read me instructions to run the code.
 1. Download all files that are uploaded
 2. put them in the same folder
 3. Run code.rb to run the application
-4. Run test.rb to run the tests
+4. Run test.rb to run the function tests
+5. RUn crud_test.rb to run the create, read, update, and delete tests
 
 #About the code
 1. When you log in, you need I.D. and password. (ID: kswag Password: 1234)

@@ -226,7 +226,7 @@ def check_ticnum_exist(tn)
 end
 
 def select_ticket_with_lp(lp)
-	@db.execute("SELECT *FROM Ticket WHERE License_plate_num = (?)", [lp])
+	puts @db.execute("SELECT *FROM Ticket WHERE License_plate_num = (?)", [lp])
 end
 
 def select_ticket_num_with_lp(lp)

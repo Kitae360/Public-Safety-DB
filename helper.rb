@@ -103,7 +103,7 @@ end
 def search_with_license_plate()
 	lp = question("\n\nType the license plate number")
 	if @DB.check_exist_tic_with_lp(lp) == [[1]]
-		puts @DB.select_ticket_with_lp(lp)
+		@DB.select_ticket_with_lp(lp)
 		list = @DB.select_ticket_num_with_lp(lp)
 		num = question("Type the number of the one that you were looking for")
 		a = list[num.to_i - 1]
